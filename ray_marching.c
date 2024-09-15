@@ -10,9 +10,9 @@
 #include "ray-marching-lib/utils/utils.h"
 #include "ray-marching-lib/scene/scene.h"
 
-const double MIN_STEP = 0.0001;
-const double MAX_STEP = 1000;
-const double PI = 3.14159265358979323846; // More precise PI value
+const float MIN_STEP = 0.0001;
+const float MAX_STEP = 1000;
+const float PI = 3.14159265358979323846; // More precise PI value
 
 RayResult cast_ray(const Scene *scene, const Vec3 *direction)
 {
@@ -23,7 +23,7 @@ RayResult cast_ray(const Scene *scene, const Vec3 *direction)
 
     while (1)
     {
-        double stepSize = distance_to_closest_sphere(&currentPos, scene->spheres, scene->sphereCount);
+        float stepSize = distance_to_closest_sphere(&currentPos, scene->spheres, scene->sphereCount);
 
         if (stepSize < MIN_STEP)
         {
@@ -64,16 +64,16 @@ int main()
 
     memset(buffer, 0, buffer_size);
 
-    double r = (double)rand() / (double)RAND_MAX;
-    double g = (double)rand() / (double)RAND_MAX;
-    double b = (double)rand() / (double)RAND_MAX;
+    float r = (float)rand() / (float)RAND_MAX;
+    float g = (float)rand() / (float)RAND_MAX;
+    float b = (float)rand() / (float)RAND_MAX;
 
     for (int y = cam.bounds.minY; y < cam.bounds.maxY; y++)
     {
-        double phi = y * (PI / 180.0) + PI / 2;
+        float phi = y * (PI / 180.0) + PI / 2;
         for (int x = cam.bounds.minX; x < cam.bounds.maxX; x++)
         {
-            double theta = x * (PI / 180.0);
+            float theta = x * (PI / 180.0);
 
             Vec3 direction = spherical_coordinates_to_vector(theta, phi, 1);
 
@@ -92,10 +92,9 @@ int main()
     }
 
     buffer[pos] = '\0'; // Null-terminate the buffer
-    // system("cls");
+    system("cls");
     printf("%s", buffer); // Print the entire buffer at once
 
-    Sleep(50);
-
+    // Sleep(50);
     return 0;
 }

@@ -13,8 +13,8 @@ typedef struct Camera
     Vec3 origin;
     Vec3 direction; // FIXME: implementation
     CameraBounds bounds;
-    double fieldOfView; // FIXME: implementation
-    double aspectRatio; // width / height FIXME: implementation
+    float fieldOfView; // FIXME: implementation
+    float aspectRatio; // width / height FIXME: implementation
 } Camera;
 
 static inline CameraBounds *camera_bounds_create(int minX, int maxX, int minY, int maxY)
