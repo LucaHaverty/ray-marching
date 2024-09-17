@@ -25,16 +25,16 @@ static inline Quaternion quat_create(float x, float y, float z, float w)
  *
  * @returns The resulting vector after the multiplication.
  */
-static inline vec3 quat_multiply_vec3(Quaternion quaternion, Vec3 vec3)
+static inline Vec3 quat_multiply_vec3(Quaternion *quaternion, Vec3 *vec3)
 {
     // Quaternion components
-    float qx = quaternion.x;
-    float qy = quaternion.y;
-    float qz = quaternion.z;
-    float qw = quaternion.w;
+    float qx = quaternion->x;
+    float qy = quaternion->y;
+    float qz = quaternion->z;
+    float qw = quaternion->w;
 
     // Vector as quaternion with w = 0
-    Quaternion vec_quat = {vec3.x, vec3.y, vec3.z, 0};
+    Quaternion vec_quat = {vec3->x, vec3->y, vec3->z, 0};
 
     // Quaternion multiplication (q * vec)
     Quaternion res1;
@@ -63,15 +63,15 @@ static inline vec3 quat_multiply_vec3(Quaternion quaternion, Vec3 vec3)
  *
  * @returns A quaternion equivalent to the euler angle.
  */
-static inline Quaternion quat_from_euler(Vec3 euler)
+static inline Quaternion quat_from_euler(Vec3 *euler)
 {
     // Compute half-angles
-    float cy = cosf(euler.y * 0.5f); // Yaw
-    float sy = sinf(euler.y * 0.5f);
-    float cp = cosf(euler.x * 0.5f); // Pitch
-    float sp = sinf(euler.x * 0.5f);
-    float cr = cosf(euler.z * 0.5f); // Roll
-    float sr = sinf(euler.z * 0.5f);
+    float cy = cosf(euler->y * 0.5f); // Yaw
+    float sy = sinf(euler->y * 0.5f);
+    float cp = cosf(euler->x * 0.5f); // Pitch
+    float sp = sinf(euler->x * 0.5f);
+    float cr = cosf(euler->z * 0.5f); // Roll
+    float sr = sinf(euler->z * 0.5f);
 
     Quaternion q;
     q.w = cr * cp * cy + sr * sp * sy;

@@ -10,9 +10,3 @@ static inline Vec3 spherical_coordinates_to_vector(float theta, float phi, float
 
     return vector;
 }
-
-static inline float smoothMin(float d1, float d2, float k)
-{
-    float h = fmax(k - fabsf(d1 - d2), 0.0) / k;
-    return fminf(d1, d2) - h * h * h * k * (1.0 / 6.0);
-}

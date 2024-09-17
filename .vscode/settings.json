@@ -62,7 +62,10 @@
     "cstdlib": "c",
     "hash_map.h": "c",
     "vec3.h": "c",
-    "sphere.h": "c"
+    "sphere.h": "c",
+    "limits": "cpp",
+    "camera.h": "c",
+    "utils.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

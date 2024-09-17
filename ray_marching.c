@@ -9,21 +9,38 @@
 #include "ray-marching-lib/ray_result/ray_result.h"
 #include "ray-marching-lib/utils/utils.h"
 #include "ray-marching-lib/scene/scene.h"
+#include "ray-marching-lib/sdf_primitives/sdf_primitives.h"
+#include "ray-marching-lib/sdf_operations/sdf_operations.h"
+#include "ray-marching-lib/sdf_modifiers/sdf_modifiers.h"
 
 const float MIN_STEP = 0.0001;
 const float MAX_STEP = 1000;
 const float PI = 3.14159265358979323846; // More precise PI value
 
-RayResult cast_ray(const Scene *scene, const Vec3 *direction)
+float compute_distance(Vec3 *point)
+{
+    Vec3 translation1 = {-5, 0, 0};
+    Vec3 translatedPoint1 = sdf_mod_translate(point, &translation1);
+    float sphere1 = sdf_prim_sphere(&translatedPoint1, 1);
+
+    Vec3 translation2 = {-5.5, 1, 1};
+    Vec3 translatedPoint2 = sdf_mod_translate(point, &translation2);
+    float sphere2 = sdf_prim_sphere(&translatedPoint2, 1);
+
+    return sdf_op_smooth_union(sphere1, sphere2, 1);
+}
+
+RayResult cast_ray(const Camera *camera, const Vec3 *direction)
 {
     // numSpheres = sizeof(spheres) / sizeof(spheres[0]);
-    Vec3 origin = scene->camera.origin;
+    Vec3 origin = camera->origin;
     Vec3 currentPos = vec3_create(origin.x, origin.y, origin.z);
     int numSteps = 0;
 
     while (1)
     {
-        float stepSize = distance_to_closest_sphere(&currentPos, scene->spheres, scene->sphereCount);
+        /* float stepSize = distance_to_closest_sphere(&currentPos, scene->spheres, scene->sphereCount); */
+        float stepSize = compute_distance(&currentPos);
 
         if (stepSize < MIN_STEP)
         {
@@ -77,7 +94,7 @@ int main()
 
             Vec3 direction = spherical_coordinates_to_vector(theta, phi, 1);
 
-            RayResult result = cast_ray(scene, &direction);
+            RayResult result = cast_ray(&scene->camera, &direction);
             if (result.hitScene)
             {
                 int color = fmax(255 - result.numSteps * 10, 0);
@@ -92,9 +109,8 @@ int main()
     }
 
     buffer[pos] = '\0'; // Null-terminate the buffer
-    system("cls");
+    // system("cls");
     printf("%s", buffer); // Print the entire buffer at once
 
-    // Sleep(50);
     return 0;
 }
